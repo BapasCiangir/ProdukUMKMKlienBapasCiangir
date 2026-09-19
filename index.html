@@ -3,66 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog Produk Interaktif</title>
+    <title>Produk UMKM Klien Bapas Kelas II Ciangir</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        bapas: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans antialiased">
 
-    <!-- Navbar / Header -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-indigo-600 text-white p-2 rounded-lg">
+    <!-- Top Info Bar -->
+    <div class="bg-slate-900 text-slate-300 text-xs py-2 px-4 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-building-columns text-emerald-400"></i>
+                <span class="font-medium">Balai Pemasyarakatan Kelas II Ciangir</span>
+            </div>
+            <div id="adminBadgeTop" class="hidden text-amber-400 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-shield-halved"></i> Mode Administrator Aktif
+            </div>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-30 shadow-sm border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <!-- Logo & Brand Title -->
+            <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 bg-gradient-to-br from-emerald-600 to-teal-800 text-white rounded-xl flex items-center justify-center shadow-md shadow-emerald-600/20">
                     <i class="fa-solid fa-store text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg text-slate-900 leading-tight">Katalog Produk</h1>
-                    <p class="text-xs text-slate-500">Official Web Store</p>
+                    <h1 class="font-extrabold text-base sm:text-lg text-slate-900 leading-snug tracking-tight">
+                        Produk UMKM Klien
+                    </h1>
+                    <p class="text-xs font-semibold text-emerald-700">
+                        Balai Pemasyarakatan Kelas II Ciangir
+                    </p>
                 </div>
             </div>
 
-            <!-- Admin Auth Status & Controls -->
-            <div class="flex items-center gap-3">
-                <span id="adminBadge" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full border border-amber-200">
-                    <i class="fa-solid fa-user-shield"></i> Mode Admin
-                </span>
-
-                <button id="btnOpenAddModal" onclick="openProductModal()" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-all shadow-sm flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i>
+            <!-- Admin Controls -->
+            <div class="flex items-center gap-2.5">
+                <button id="btnOpenAddModal" onclick="openProductModal()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-md shadow-emerald-600/20 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-plus text-sm"></i>
                     <span>Tambah Produk</span>
                 </button>
 
-                <button id="btnLogin" onclick="openLoginModal()" class="bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium px-4 py-2 rounded-lg transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-lock"></i>
+                <button id="btnLogin" onclick="openLoginModal()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-lock text-xs"></i>
                     <span>Login Admin</span>
                 </button>
                 
-                <button id="btnLogout" onclick="logoutAdmin()" class="hidden bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-right-from-bracket"></i>
+                <button id="btnLogout" onclick="logoutAdmin()" class="hidden bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket text-xs"></i>
                     <span>Logout</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- Hero Banner Section -->
+    <section class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white py-10 px-4 sm:px-6 lg:px-8 border-b border-emerald-900/50">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-left max-w-2xl">
+                <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-semibold rounded-full border border-emerald-500/30">
+                    <i class="fa-solid fa-hand-holding-heart mr-1"></i> Bimbingan & Kemandirian Klien Bapas
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Katalog Produk & Karya Kreatif</h2>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                    Mendukung kemandirian dan pemberdayaan ekonomi Klien Pemasyarakatan Balai Pemasyarakatan Kelas II Ciangir melalui hasil karya dan produk UMKM berkualitas.
+                </p>
+            </div>
+            <div class="flex items-center gap-4 bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10">
+                <div class="text-center px-3 border-r border-white/10">
+                    <p id="totalProductsCount" class="text-2xl font-bold text-emerald-400">0</p>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-wider">Total Produk</p>
+                </div>
+                <div class="text-center px-3">
+                    <p class="text-2xl font-bold text-emerald-400">100%</p>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-wider">Karya Klien</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
         
         <!-- Filter & Search Section -->
         <section class="mb-8 flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
+            <!-- Search Bar -->
             <div class="relative flex-1 max-w-md">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Cari nama atau deskripsi produk..." class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm shadow-sm">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Cari produk UMKM Klien..." class="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm shadow-sm transition-all">
             </div>
 
+            <!-- Category Filters -->
             <div id="categoryFilters" class="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
                 <!-- Dynamic Category Buttons -->
             </div>
@@ -75,44 +135,45 @@
             </div>
 
             <!-- Empty State -->
-            <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300">
-                <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div id="emptyState" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-slate-300">
+                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <i class="fa-solid fa-box-open text-2xl"></i>
                 </div>
-                <h3 class="font-semibold text-slate-800 text-base mb-1">Produk Tidak Ditemukan</h3>
-                <p class="text-slate-500 text-sm">Coba gunakan kata kunci lain atau pilih kategori yang berbeda.</p>
+                <h3 class="font-bold text-slate-800 text-base mb-1">Belum Ada Produk</h3>
+                <p class="text-slate-500 text-sm">Tidak ditemukan produk UMKM sesuai pencarian atau kategori ini.</p>
             </div>
         </section>
 
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-slate-500">
-            &copy; 2026 Katalog Produk Website. All rights reserved.
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="text-sm font-medium text-slate-200">Balai Pemasyarakatan Kelas II Ciangir</p>
+            <p class="text-xs text-slate-500">&copy; 2026 Katalog Produk UMKM Klien Bapas Ciangir. All rights reserved.</p>
         </div>
     </footer>
 
     <!-- MODAL 1: LOGIN ADMIN -->
-    <div id="loginModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 relative">
-            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+    <div id="loginModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 relative border border-slate-100">
+            <button onclick="closeLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
             <div class="text-center mb-6">
-                <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <i class="fa-solid fa-user-gear text-xl"></i>
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-inner">
+                    <i class="fa-solid fa-user-shield text-xl"></i>
                 </div>
                 <h3 class="font-bold text-lg text-slate-900">Login Administrator</h3>
-                <p class="text-xs text-slate-500">Masukkan password untuk mengelola produk</p>
+                <p class="text-xs text-slate-500">Akses khusus pengelola Bapas Ciangir</p>
             </div>
-            <form onsubmit="handleLogin(event)">
-                <div class="mb-4">
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Password Admin</label>
-                    <input type="password" id="adminPasswordInput" required placeholder="Masukkan password..." class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <p id="loginErrorMsg" class="text-red-500 text-xs mt-1.5 hidden"><i class="fa-solid fa-circle-exclamation"></i> Password salah! Coba lagi.</p>
+                    <input type="password" id="adminPasswordInput" required placeholder="Masukkan password..." class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <p id="loginErrorMsg" class="text-rose-500 text-xs mt-1.5 hidden"><i class="fa-solid fa-circle-exclamation"></i> Password salah! Coba lagi.</p>
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg text-sm transition-all shadow-md">
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl text-sm transition-all shadow-md shadow-emerald-600/20">
                     Masuk Mode Admin
                 </button>
             </form>
@@ -120,56 +181,56 @@
     </div>
 
     <!-- MODAL 2: TAMBAH / EDIT PRODUK -->
-    <div id="productModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+    <div id="productModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 relative max-h-[90vh] overflow-y-auto border border-slate-100">
+            <button onclick="closeProductModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
-            <h3 id="modalTitle" class="font-bold text-lg text-slate-900 mb-4">Tambah Produk Baru</h3>
+            <h3 id="modalTitle" class="font-extrabold text-lg text-slate-900 mb-4">Tambah Produk UMKM Baru</h3>
             
             <form id="productForm" onsubmit="saveProduct(event)" class="space-y-4">
                 <input type="hidden" id="productId">
                 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Produk *</label>
-                    <input type="text" id="prodName" required placeholder="Contoh: Sepatu Sneakers" class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Produk UMKM *</label>
+                    <input type="text" id="prodName" required placeholder="Contoh: Kerajinan Tangan Kulit / Telur Asin" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Jenis / Kategori Produk *</label>
-                    <input type="text" id="prodCategory" required placeholder="Contoh: Fashion, Elektronik, Aksesoris" class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <input type="text" id="prodCategory" required placeholder="Contoh: Kerajinan, Kuliner, Fashion, Peranian" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">Harga (Rp) *</label>
-                    <input type="number" id="prodPrice" required placeholder="Contoh: 150000" class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Harga Produk (Rp) *</label>
+                    <input type="number" id="prodPrice" required placeholder="Contoh: 50000" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
 
                 <!-- UPLOAD GAMBAR DARI FILE KOMPUTER (.PNG, .JPG, .JPEG) -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Upload Foto Produk (.png, .jpg, .jpeg) *</label>
-                    <input type="file" id="prodImageFile" accept="image/png, image/jpeg, image/jpg" onchange="previewImageFile(event)" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
+                    <input type="file" id="prodImageFile" accept="image/png, image/jpeg, image/jpg" onchange="previewImageFile(event)" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
                     
                     <!-- Preview Foto -->
                     <div id="imagePreviewContainer" class="mt-2 hidden">
-                        <p class="text-[11px] text-slate-500 mb-1">Preview Gambar:</p>
-                        <img id="imagePreview" src="" alt="Preview" class="w-24 h-24 object-cover rounded-lg border border-slate-200">
+                        <p class="text-[11px] font-medium text-slate-500 mb-1">Preview Foto:</p>
+                        <img id="imagePreview" src="" alt="Preview" class="w-24 h-24 object-cover rounded-xl border border-slate-200 shadow-sm">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">Link Pembelian Produk *</label>
-                    <input type="url" id="prodLink" required placeholder="https://shopee.co.id/link-produk atau https://wa.me/..." class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Link Pembelian / Kontak Pemesanan *</label>
+                    <input type="url" id="prodLink" required placeholder="https://wa.me/628... atau https://shopee.co.id/..." class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Deskripsi Singkat (Opsional)</label>
-                    <textarea id="prodDesc" rows="2" placeholder="Deskripsi produk..." class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    <textarea id="prodDesc" rows="2" placeholder="Jelaskan detail karya/produk Klien..." class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" onclick="closeProductModal()" class="px-4 py-2 border border-slate-300 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-50">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm">Simpan Produk</button>
+                    <button type="button" onclick="closeProductModal()" class="px-4 py-2.5 border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-50">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-600/20">Simpan Produk</button>
                 </div>
             </form>
         </div>
@@ -177,51 +238,51 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        const ADMIN_PASSWORD_SECRET = "admin123"; // Password Admin
+        const ADMIN_PASSWORD_SECRET = "admin123"; // Password Admin Bapas
         
         let isAdminLoggedIn = false;
         let selectedCategory = "Semua";
-        let currentBase64Image = ""; // Menyimpan string gambar dari file komputer
+        let currentBase64Image = "";
 
+        // Sample Data Produk Awal UMKM Klien Bapas Ciangir
         const initialProducts = [
             {
                 id: "1",
-                name: "Kemeja Batik Premium",
-                category: "Fashion",
-                price: 185000,
-                image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500&q=80",
-                link: "https://tokopedia.com",
-                desc: "Kemeja batik katun halus, nyaman dipakai sehari-hari."
+                name: "Dompet Kulit Sintetis Handcrafted",
+                category: "Kerajinan",
+                price: 75000,
+                image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&q=80",
+                link: "https://wa.me/628123456789",
+                desc: "Produk kerajinan tangan hasil bimbingan kemandirian Klien Bapas Ciangir. Jahitan rapi dan tahan lama."
             },
             {
                 id: "2",
-                name: "Wireless Earbuds TWS",
-                category: "Elektronik",
-                price: 250000,
-                image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&q=80",
-                link: "https://shopee.co.id",
-                desc: "Audio jernih, koneksi bluetooth 5.3, tahan baterai hingga 24 jam."
+                name: "Kopi Bapas Ciangir Blend (200g)",
+                category: "Kuliner",
+                price: 45000,
+                image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=500&q=80",
+                link: "https://wa.me/628123456789",
+                desc: "Biji kopi sangrai pilihan racikan Klien Pemasyarakatan dengan citarasa khas dan aroma mantap."
             }
         ];
 
         function getStoredProducts() {
-            const stored = localStorage.getItem('catalog_products');
+            const stored = localStorage.getItem('bapas_ciangir_umkm');
             if (!stored) {
-                localStorage.setItem('catalog_products', JSON.stringify(initialProducts));
+                localStorage.setItem('bapas_ciangir_umkm', JSON.stringify(initialProducts));
                 return initialProducts;
             }
             return JSON.parse(stored);
         }
 
         function saveProductsToStorage(products) {
-            localStorage.setItem('catalog_products', JSON.stringify(products));
+            localStorage.setItem('bapas_ciangir_umkm', JSON.stringify(products));
         }
 
         function formatRupiah(number) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(number);
         }
 
-        // --- PREVIEW & KONVERSI FILE GAMBAR DARI KOMPUTER ---
         function previewImageFile(event) {
             const file = event.target.files[0];
             if (file) {
@@ -236,7 +297,6 @@
             }
         }
 
-        // --- SISTEM AUTHENTICATION ADMIN ---
         function checkAdminSession() {
             const session = sessionStorage.getItem('admin_session');
             isAdminLoggedIn = session === 'true';
@@ -247,18 +307,18 @@
             const btnLogin = document.getElementById('btnLogin');
             const btnLogout = document.getElementById('btnLogout');
             const btnOpenAddModal = document.getElementById('btnOpenAddModal');
-            const adminBadge = document.getElementById('adminBadge');
+            const adminBadgeTop = document.getElementById('adminBadgeTop');
 
             if (isAdminLoggedIn) {
                 btnLogin.classList.add('hidden');
                 btnLogout.classList.remove('hidden');
                 btnOpenAddModal.classList.remove('hidden');
-                adminBadge.classList.remove('hidden');
+                adminBadgeTop.classList.remove('hidden');
             } else {
                 btnLogin.classList.remove('hidden');
                 btnLogout.classList.add('hidden');
                 btnOpenAddModal.classList.add('hidden');
-                adminBadge.classList.add('hidden');
+                adminBadgeTop.classList.add('hidden');
             }
             renderProducts();
         }
@@ -292,16 +352,15 @@
             updateAdminUI();
         }
 
-        // --- RENDER PRODUK & FILTER ---
         function renderCategories() {
             const products = getStoredProducts();
             const categories = ['Semua', ...new Set(products.map(p => p.category))];
             const filterContainer = document.getElementById('categoryFilters');
             
             filterContainer.innerHTML = categories.map(cat => `
-                <button onclick="setCategory('${cat}')" class="px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+                <button onclick="setCategory('${cat}')" class="px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                     selectedCategory === cat 
-                    ? 'bg-indigo-600 text-white shadow-sm' 
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20' 
                     : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
                 }">
                     ${cat}
@@ -331,6 +390,9 @@
         function displayProducts(products) {
             const grid = document.getElementById('productGrid');
             const emptyState = document.getElementById('emptyState');
+            const totalProductsCount = document.getElementById('totalProductsCount');
+
+            totalProductsCount.innerText = getStoredProducts().length;
 
             if (products.length === 0) {
                 grid.innerHTML = '';
@@ -340,36 +402,40 @@
 
             emptyState.classList.add('hidden');
             grid.innerHTML = products.map(p => `
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col h-full group">
+                <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full group hover:-translate-y-1">
                     <div class="relative aspect-square overflow-hidden bg-slate-100">
-                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/300?text=Gambar+Error'">
-                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-md shadow-sm border border-slate-200">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/300?text=Foto+Produk'">
+                        
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-emerald-800 text-[10px] font-extrabold px-3 py-1 rounded-full shadow-sm border border-emerald-100">
                             ${p.category}
                         </span>
 
                         ${isAdminLoggedIn ? `
                             <div class="absolute top-3 right-3 flex gap-1.5">
-                                <button onclick="editProduct('${p.id}')" class="w-8 h-8 bg-amber-500 hover:bg-amber-600 text-white rounded-lg flex items-center justify-center shadow-md transition-all" title="Edit Produk">
+                                <button onclick="editProduct('${p.id}')" class="w-8 h-8 bg-amber-500 hover:bg-amber-600 text-white rounded-xl flex items-center justify-center shadow-md transition-all" title="Edit Produk">
                                     <i class="fa-solid fa-pen text-xs"></i>
                                 </button>
-                                <button onclick="deleteProduct('${p.id}')" class="w-8 h-8 bg-red-600 hover:bg-red-700 text-white rounded-lg flex items-center justify-center shadow-md transition-all" title="Hapus Produk">
+                                <button onclick="deleteProduct('${p.id}')" class="w-8 h-8 bg-rose-600 hover:bg-rose-700 text-white rounded-xl flex items-center justify-center shadow-md transition-all" title="Hapus Produk">
                                     <i class="fa-solid fa-trash text-xs"></i>
                                 </button>
                             </div>
                         ` : ''}
                     </div>
 
-                    <div class="p-4 flex-1 flex flex-col justify-between">
+                    <div class="p-5 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-slate-900 text-base mb-1 line-clamp-1">${p.name}</h3>
-                            <p class="text-xs text-slate-500 mb-3 line-clamp-2">${p.desc || 'Tidak ada deskripsi.'}</p>
+                            <div class="flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                                <i class="fa-solid fa-award text-emerald-600"></i> Karya Klien Bapas
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-base mb-1.5 line-clamp-1 group-hover:text-emerald-700 transition-colors">${p.name}</h3>
+                            <p class="text-xs text-slate-500 mb-4 line-clamp-2 leading-relaxed">${p.desc || 'Produk hasil bimbingan kemandirian Klien Pemasyarakatan.'}</p>
                         </div>
                         <div>
-                            <div class="text-lg font-bold text-indigo-600 mb-3">
+                            <div class="text-lg font-extrabold text-emerald-700 mb-3">
                                 ${formatRupiah(p.price)}
                             </div>
-                            <a href="${p.link}" target="_blank" rel="noopener noreferrer" class="w-full bg-slate-900 hover:bg-indigo-600 text-white font-medium text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors">
-                                <span>Beli Sekarang</span>
+                            <a href="${p.link}" target="_blank" rel="noopener noreferrer" class="w-full bg-slate-900 hover:bg-emerald-600 text-white font-semibold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm">
+                                <span>Beli / Pesan Sekarang</span>
                                 <i class="fa-solid fa-arrow-right text-[10px]"></i>
                             </a>
                         </div>
@@ -378,9 +444,8 @@
             `).join('');
         }
 
-        // --- TAMBAH / EDIT / HAPUS PRODUK ---
         function openProductModal(isEdit = false) {
-            document.getElementById('modalTitle').innerText = isEdit ? "Edit Produk" : "Tambah Produk Baru";
+            document.getElementById('modalTitle').innerText = isEdit ? "Edit Produk UMKM" : "Tambah Produk UMKM Baru";
             document.getElementById('productModal').classList.remove('hidden');
         }
 
@@ -411,7 +476,6 @@
             let products = getStoredProducts();
 
             if (id) {
-                // Edit
                 products = products.map(p => p.id === id ? { 
                     id, 
                     name, 
@@ -422,7 +486,6 @@
                     desc 
                 } : p);
             } else {
-                // Tambah Baru
                 const newProduct = {
                     id: Date.now().toString(),
                     name,
