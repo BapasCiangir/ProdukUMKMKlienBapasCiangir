@@ -1,65 +1,554 @@
-function closeProductModal() {
-    document.getElementById('productModal').classList.add('hidden');
-    document.getElementById('productForm').reset();
-    document.getElementById('productId').value = '';
-    document.getElementById('prodImageFile').value = ''; // Reset input file
-    document.getElementById('imagePreviewContainer').classList.add('hidden');
-    currentBase64Image = "";
-}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produk UMKM Klien Bapas Kelas II Ciangir</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        bapas: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans antialiased">
 
-function saveProduct(e) {
-    e.preventDefault();
-    if (!isAdminLoggedIn) return;
+    <!-- Top Info Bar -->
+    <div class="bg-slate-900 text-slate-300 text-xs py-2 px-4 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-building-columns text-emerald-400"></i>
+                <span class="font-medium">Balai Pemasyarakatan Kelas II Ciangir</span>
+            </div>
+            <div id="adminBadgeTop" class="hidden text-amber-400 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-shield-halved"></i> Mode Administrator Aktif
+            </div>
+        </div>
+    </div>
 
-    const id = document.getElementById('productId').value;
-    const name = document.getElementById('prodName').value.trim();
-    const category = document.getElementById('prodCategory').value.trim();
-    const price = parseFloat(document.getElementById('prodPrice').value);
-    const link = document.getElementById('prodLink').value.trim();
-    const desc = document.getElementById('prodDesc').value.trim();
+    <!-- Header & Navigation -->
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-30 shadow-sm border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <!-- Logo & Brand Title -->
+            <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 bg-gradient-to-br from-emerald-600 to-teal-800 text-white rounded-xl flex items-center justify-center shadow-md shadow-emerald-600/20">
+                    <i class="fa-solid fa-store text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-base sm:text-lg text-slate-900 leading-snug tracking-tight">
+                        Produk UMKM Klien
+                    </h1>
+                    <p class="text-xs font-semibold text-emerald-700">
+                        Balai Pemasyarakatan Kelas II Ciangir
+                    </p>
+                </div>
+            </div>
 
-    // Validasi foto untuk produk baru
-    if (!currentBase64Image && !id) {
-        alert("Harap pilih foto produk dari komputer!");
-        return;
-    }
+            <!-- Admin Controls -->
+            <div class="flex items-center gap-2.5">
+                <button id="btnOpenAddModal" onclick="openProductModal()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-md shadow-emerald-600/20 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-plus text-sm"></i>
+                    <span>Tambah Produk</span>
+                </button>
 
-    let products = getStoredProducts();
+                <button id="btnLogin" onclick="openLoginModal()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-lock text-xs"></i>
+                    <span>Login Admin</span>
+                </button>
+                
+                <button id="btnLogout" onclick="logoutAdmin()" class="hidden bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket text-xs"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-    if (id) {
-        // Edit Produk yang Ada
-        products = products.map(p => p.id === id ? { 
-            id, 
-            name, 
-            category, 
-            price, 
-            image: currentBase64Image || p.image, 
-            link, 
-            desc 
-        } : p);
-    } else {
-        // Tambah Produk Baru
-        const newProduct = {
-            id: Date.now().toString(),
-            name,
-            category,
-            price,
-            image: currentBase64Image,
-            link,
-            desc
-        };
-        products.push(newProduct);
-    }
+    <!-- Hero Banner Section -->
+    <section class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white py-10 px-4 sm:px-6 lg:px-8 border-b border-emerald-900/50">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-left max-w-2xl">
+                <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-semibold rounded-full border border-emerald-500/30">
+                    <i class="fa-solid fa-hand-holding-heart mr-1"></i> Bimbingan & Kemandirian Klien Bapas
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Katalog Produk & Karya Kreatif</h2>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                    Mendukung kemandirian dan pemberdayaan ekonomi Klien Pemasyarakatan Balai Pemasyarakatan Kelas II Ciangir melalui hasil karya dan produk UMKM berkualitas.
+                </p>
+            </div>
+            <div class="flex items-center gap-4 bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10">
+                <div class="text-center px-3 border-r border-white/10">
+                    <p id="totalProductsCount" class="text-2xl font-bold text-emerald-400">0</p>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-wider">Total Produk</p>
+                </div>
+                <div class="text-center px-3">
+                    <p class="text-2xl font-bold text-emerald-400">100%</p>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-wider">Karya Klien</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // 1. Simpan ke LocalStorage
-    saveProductsToStorage(products);
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+        
+        <!-- Filter & Search Section -->
+        <section class="mb-8 flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
+            <!-- Search Bar -->
+            <div class="relative flex-1 max-w-md">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Cari produk UMKM Klien..." class="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm shadow-sm transition-all">
+            </div>
 
-    // 2. Reset pencarian & ubah filter kategori ke "Semua" agar produk pasti terlihat
-    document.getElementById('searchInput').value = '';
-    selectedCategory = "Semua";
+            <!-- Category Filters -->
+            <div id="categoryFilters" class="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+                <!-- Dynamic Category Buttons -->
+            </div>
+        </section>
 
-    // 3. Tutup modal & render ulang UI
-    closeProductModal();
-    renderCategories();
-    filterProducts();
-}
+        <!-- Product Grid -->
+        <section>
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Items populated by JS -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-slate-300">
+                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-box-open text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-slate-800 text-base mb-1">Belum Ada Produk</h3>
+                <p class="text-slate-500 text-sm">Tidak ditemukan produk UMKM sesuai pencarian atau kategori ini.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="text-sm font-medium text-slate-200">Balai Pemasyarakatan Kelas II Ciangir</p>
+            <p class="text-xs text-slate-500">&copy; 2026 Katalog Produk UMKM Klien Bapas Ciangir. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: LOGIN ADMIN -->
+    <div id="loginModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 relative border border-slate-100">
+            <button onclick="closeLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-inner">
+                    <i class="fa-solid fa-user-shield text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg text-slate-900">Login Administrator</h3>
+                <p class="text-xs text-slate-500">Akses khusus pengelola Bapas Ciangir</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Password Admin</label>
+                    <input type="password" id="adminPasswordInput" required placeholder="Masukkan password..." class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <p id="loginErrorMsg" class="text-rose-500 text-xs mt-1.5 hidden"><i class="fa-solid fa-circle-exclamation"></i> Password salah! Coba lagi.</p>
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl text-sm transition-all shadow-md shadow-emerald-600/20">
+                    Masuk Mode Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: TAMBAH / EDIT PRODUK -->
+    <div id="productModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 relative max-h-[90vh] overflow-y-auto border border-slate-100">
+            <button onclick="closeProductModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 id="modalTitle" class="font-extrabold text-lg text-slate-900 mb-4">Tambah Produk UMKM Baru</h3>
+            
+            <form id="productForm" onsubmit="saveProduct(event)" class="space-y-4">
+                <input type="hidden" id="productId">
+                
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Produk UMKM *</label>
+                    <input type="text" id="prodName" required placeholder="Contoh: Kerajinan Tangan Kulit / Telur Asin" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Jenis / Kategori Produk *</label>
+                    <input type="text" id="prodCategory" required placeholder="Contoh: Kerajinan, Kuliner, Fashion, Pertanian" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Harga Produk (Rp) *</label>
+                    <input type="number" id="prodPrice" required placeholder="Contoh: 50000" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <!-- UPLOAD GAMBAR DARI FILE KOMPUTER -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Upload Foto Produk (.png, .jpg, .jpeg) *</label>
+                    <input type="file" id="prodImageFile" accept="image/png, image/jpeg, image/jpg" onchange="previewImageFile(event)" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                    
+                    <!-- Preview Foto -->
+                    <div id="imagePreviewContainer" class="mt-2 hidden">
+                        <p class="text-[11px] font-medium text-slate-500 mb-1">Preview Foto:</p>
+                        <img id="imagePreview" src="" alt="Preview" class="w-24 h-24 object-cover rounded-xl border border-slate-200 shadow-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Link Pembelian / Kontak Pemesanan *</label>
+                    <input type="url" id="prodLink" required placeholder="https://wa.me/628... atau https://shopee.co.id/..." class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Deskripsi Singkat (Opsional)</label>
+                    <textarea id="prodDesc" rows="2" placeholder="Jelaskan detail karya/produk Klien..." class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeProductModal()" class="px-4 py-2.5 border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-50">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-600/20">Simpan Produk</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const ADMIN_PASSWORD_SECRET = "Bapas2026"; // Password Admin Bapas
+        
+        let isAdminLoggedIn = false;
+        let selectedCategory = "Semua";
+        let currentBase64Image = "";
+
+        // Sample Data Produk Awal UMKM Klien Bapas Ciangir
+        const initialProducts = [
+            {
+                id: "1",
+                name: "Dompet Kulit Sintetis Handcrafted",
+                category: "Kerajinan",
+                price: 75000,
+                image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&q=80",
+                link: "https://wa.me/628123456789",
+                desc: "Produk kerajinan tangan hasil bimbingan kemandirian Klien Bapas Ciangir. Jahitan rapi dan tahan lama."
+            },
+            {
+                id: "2",
+                name: "Kopi Bapas Ciangir Blend (200g)",
+                category: "Kuliner",
+                price: 45000,
+                image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=500&q=80",
+                link: "https://wa.me/628123456789",
+                desc: "Biji kopi sangrai pilihan racikan Klien Pemasyarakatan dengan citarasa khas dan aroma mantap."
+            }
+        ];
+
+        function getStoredProducts() {
+            const stored = localStorage.getItem('bapas_ciangir_umkm');
+            if (!stored) {
+                localStorage.setItem('bapas_ciangir_umkm', JSON.stringify(initialProducts));
+                return initialProducts;
+            }
+            return JSON.parse(stored);
+        }
+
+        function saveProductsToStorage(products) {
+            localStorage.setItem('bapas_ciangir_umkm', JSON.stringify(products));
+        }
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(number);
+        }
+
+        function previewImageFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentBase64Image = e.target.result;
+                    const previewImg = document.getElementById('imagePreview');
+                    previewImg.src = currentBase64Image;
+                    document.getElementById('imagePreviewContainer').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function checkAdminSession() {
+            const session = sessionStorage.getItem('admin_session');
+            isAdminLoggedIn = session === 'true';
+            updateAdminUI();
+        }
+
+        function updateAdminUI() {
+            const btnLogin = document.getElementById('btnLogin');
+            const btnLogout = document.getElementById('btnLogout');
+            const btnOpenAddModal = document.getElementById('btnOpenAddModal');
+            const adminBadgeTop = document.getElementById('adminBadgeTop');
+
+            if (isAdminLoggedIn) {
+                btnLogin.classList.add('hidden');
+                btnLogout.classList.remove('hidden');
+                btnOpenAddModal.classList.remove('hidden');
+                adminBadgeTop.classList.remove('hidden');
+            } else {
+                btnLogin.classList.remove('hidden');
+                btnLogout.classList.add('hidden');
+                btnOpenAddModal.classList.add('hidden');
+                adminBadgeTop.classList.add('hidden');
+            }
+            renderProducts();
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('loginErrorMsg').classList.add('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('adminPasswordInput').value;
+            if (pass === ADMIN_PASSWORD_SECRET) {
+                sessionStorage.setItem('admin_session', 'true');
+                isAdminLoggedIn = true;
+                closeLoginModal();
+                updateAdminUI();
+            } else {
+                document.getElementById('loginErrorMsg').classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('admin_session');
+            isAdminLoggedIn = false;
+            updateAdminUI();
+        }
+
+        function renderCategories() {
+            const products = getStoredProducts();
+            const categories = ['Semua', ...new Set(products.map(p => p.category))];
+            const filterContainer = document.getElementById('categoryFilters');
+            
+            filterContainer.innerHTML = categories.map(cat => `
+                <button onclick="setCategory('${cat}')" class="px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                    selectedCategory === cat 
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20' 
+                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                }">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function setCategory(cat) {
+            selectedCategory = cat;
+            renderCategories();
+            filterProducts();
+        }
+
+        function filterProducts() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const products = getStoredProducts();
+
+            const filtered = products.filter(p => {
+                const matchesCategory = selectedCategory === 'Semua' || p.category === selectedCategory;
+                const matchesSearch = p.name.toLowerCase().includes(searchQuery) || (p.desc && p.desc.toLowerCase().includes(searchQuery));
+                return matchesCategory && matchesSearch;
+            });
+
+            displayProducts(filtered);
+        }
+
+        function renderProducts() {
+            filterProducts();
+        }
+
+        function displayProducts(products) {
+            const grid = document.getElementById('productGrid');
+            const emptyState = document.getElementById('emptyState');
+            const totalProductsCount = document.getElementById('totalProductsCount');
+
+            totalProductsCount.innerText = getStoredProducts().length;
+
+            if (products.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = products.map(p => `
+                <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full group hover:-translate-y-1">
+                    <div class="relative aspect-square overflow-hidden bg-slate-100">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/300?text=Foto+Produk'">
+                        
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-emerald-800 text-[10px] font-extrabold px-3 py-1 rounded-full shadow-sm border border-emerald-100">
+                            ${p.category}
+                        </span>
+
+                        ${isAdminLoggedIn ? `
+                            <div class="absolute top-3 right-3 flex gap-1.5">
+                                <button onclick="editProduct('${p.id}')" class="w-8 h-8 bg-amber-500 hover:bg-amber-600 text-white rounded-xl flex items-center justify-center shadow-md transition-all" title="Edit Produk">
+                                    <i class="fa-solid fa-pen text-xs"></i>
+                                </button>
+                                <button onclick="deleteProduct('${p.id}')" class="w-8 h-8 bg-rose-600 hover:bg-rose-700 text-white rounded-xl flex items-center justify-center shadow-md transition-all" title="Hapus Produk">
+                                    <i class="fa-solid fa-trash text-xs"></i>
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                                <i class="fa-solid fa-award text-emerald-600"></i> Karya Klien Bapas
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-base mb-1.5 line-clamp-1 group-hover:text-emerald-700 transition-colors">${p.name}</h3>
+                            <p class="text-xs text-slate-500 mb-4 line-clamp-2 leading-relaxed">${p.desc || 'Produk hasil bimbingan kemandirian Klien Pemasyarakatan.'}</p>
+                        </div>
+                        <div>
+                            <div class="text-lg font-extrabold text-emerald-700 mb-3">
+                                ${formatRupiah(p.price)}
+                            </div>
+                            <a href="${p.link}" target="_blank" rel="noopener noreferrer" class="w-full bg-slate-900 hover:bg-emerald-600 text-white font-semibold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm">
+                                <span>Beli / Pesan Sekarang</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openProductModal(isEdit = false) {
+            document.getElementById('modalTitle').innerText = isEdit ? "Edit Produk UMKM" : "Tambah Produk UMKM Baru";
+            document.getElementById('productModal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.add('hidden');
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            document.getElementById('prodImageFile').value = '';
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
+            currentBase64Image = "";
+        }
+
+        function saveProduct(e) {
+            e.preventDefault();
+            if (!isAdminLoggedIn) return;
+
+            const id = document.getElementById('productId').value;
+            const name = document.getElementById('prodName').value.trim();
+            const category = document.getElementById('prodCategory').value.trim();
+            const price = parseFloat(document.getElementById('prodPrice').value);
+            const link = document.getElementById('prodLink').value.trim();
+            const desc = document.getElementById('prodDesc').value.trim();
+
+            if (!currentBase64Image && !id) {
+                alert("Harap pilih foto produk dari komputer!");
+                return;
+            }
+
+            let products = getStoredProducts();
+
+            if (id) {
+                products = products.map(p => p.id === id ? { 
+                    id, 
+                    name, 
+                    category, 
+                    price, 
+                    image: currentBase64Image || p.image, 
+                    link, 
+                    desc 
+                } : p);
+            } else {
+                const newProduct = {
+                    id: Date.now().toString(),
+                    name,
+                    category,
+                    price,
+                    image: currentBase64Image,
+                    link,
+                    desc
+                };
+                products.push(newProduct);
+            }
+
+            saveProductsToStorage(products);
+
+            // Reset pencarian & ubah filter ke "Semua" agar produk baru dijamin terlihat
+            document.getElementById('searchInput').value = '';
+            selectedCategory = "Semua";
+
+            closeProductModal();
+            renderCategories();
+            filterProducts();
+        }
+
+        function editProduct(id) {
+            const products = getStoredProducts();
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            document.getElementById('productId').value = product.id;
+            document.getElementById('prodName').value = product.name;
+            document.getElementById('prodCategory').value = product.category;
+            document.getElementById('prodPrice').value = product.price;
+            document.getElementById('prodLink').value = product.link;
+            document.getElementById('prodDesc').value = product.desc || '';
+
+            currentBase64Image = product.image;
+            document.getElementById('imagePreview').src = product.image;
+            document.getElementById('imagePreviewContainer').classList.remove('hidden');
+
+            openProductModal(true);
+        }
+
+        function deleteProduct(id) {
+            if (!isAdminLoggedIn) return;
+            if (confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
+                let products = getStoredProducts();
+                products = products.filter(p => p.id !== id);
+                saveProductsToStorage(products);
+                renderCategories();
+                filterProducts();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            checkAdminSession();
+            renderCategories();
+            filterProducts();
+        });
+    </script>
+</body>
+</html>
