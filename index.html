@@ -63,43 +63,54 @@
                 <span class="font-medium text-slate-300">Balai Pemasyarakatan Kelas II Ciangir</span>
             </div>
             <div id="adminBadgeTop" class="hidden text-amber-400 font-bold flex items-center gap-1.5 bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/20 text-[10px] uppercase tracking-wider">
-                <i class="fa-solid fa-user-gear"></i> Administrator Active
+                <i class="fa-solid fa-user-gear"></i> Mode Admin Aktif
             </div>
         </div>
     </div>
 
     <!-- Header Navigation -->
-    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200/80 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+    <header class="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between gap-4">
             
-            <!-- Brand Identity -->
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-gradient-to-br from-slate-900 via-brand-900 to-brand-950 text-amber-400 rounded-2xl flex items-center justify-center shadow-lg shadow-slate-900/10 border border-slate-700/30">
-                    <i class="fa-solid fa-crown text-lg"></i>
+            <!-- Brand Identity dengan Dual Logo (Kemenimipas & Pemasyarakatan) -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                <!-- Logo 1: Kemenimipas -->
+                <div class="relative flex items-center justify-center">
+                    <img src="Logo KEMENIMIPAS new.jpg" alt="Logo Kemenimipas" class="h-12 sm:h-14 w-auto object-contain drop-shadow-sm" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Coat_of_arms_of_Indonesia.svg/300px-Coat_of_arms_of_Indonesia.svg.png';">
                 </div>
-                <div>
-                    <h1 class="font-bold text-lg sm:text-xl text-slate-900 leading-tight tracking-tight font-serif">
+                
+                <!-- Divider -->
+                <div class="h-10 w-[1px] bg-slate-300/80 my-auto"></div>
+
+                <!-- Logo 2: Ditjen Pemasyarakatan -->
+                <div class="relative flex items-center justify-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Logo_Pemasyarakatan.png/600px-Logo_Pemasyarakatan.png" alt="Logo Pemasyarakatan" class="h-11 sm:h-12 w-auto object-contain drop-shadow-sm" onerror="this.onerror=null; this.src='https://via.placeholder.com/60?text=PAS';">
+                </div>
+
+                <!-- Title Header -->
+                <div class="ml-1 sm:ml-2">
+                    <h1 class="font-bold text-base sm:text-xl text-slate-900 leading-tight tracking-tight font-serif">
                         Katalog UMKM Klien
                     </h1>
-                    <p class="text-[11px] font-bold tracking-wider uppercase text-brand-700">
+                    <p class="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-brand-700">
                         Bapas Kelas II Ciangir
                     </p>
                 </div>
             </div>
 
             <!-- Action Controls -->
-            <div class="flex items-center gap-3">
-                <button id="btnOpenAddModal" onclick="openProductModal()" class="hidden bg-brand-700 hover:bg-brand-800 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-md shadow-brand-700/20 flex items-center gap-2 border border-brand-600/30">
+            <div class="flex items-center gap-2.5 sm:gap-3">
+                <button id="btnOpenAddModal" onclick="openProductModal()" class="hidden bg-brand-700 hover:bg-brand-800 text-white text-xs font-semibold px-3.5 sm:px-4 py-2.5 rounded-xl transition-all shadow-md shadow-brand-700/20 flex items-center gap-2 border border-brand-600/30">
                     <i class="fa-solid fa-plus text-xs"></i>
-                    <span>Tambah Produk</span>
+                    <span class="hidden sm:inline">Tambah Produk</span>
                 </button>
 
-                <button id="btnLogin" onclick="openLoginModal()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 border border-slate-800">
+                <button id="btnLogin" onclick="openLoginModal()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-3.5 sm:px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2 border border-slate-800">
                     <i class="fa-solid fa-key text-[10px] text-amber-400"></i>
                     <span>Login Admin</span>
                 </button>
                 
-                <button id="btnLogout" onclick="logoutAdmin()" class="hidden bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2">
+                <button id="btnLogout" onclick="logoutAdmin()" class="hidden bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-3.5 sm:px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2">
                     <i class="fa-solid fa-right-from-bracket text-xs"></i>
                     <span>Keluar</span>
                 </button>
